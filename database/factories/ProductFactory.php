@@ -1,0 +1,25 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+
+class ProductFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    
+    public function definition()
+    {
+        
+        return [
+            'name' => 'Foguete',
+            'price'=> 1.000000,
+            'description' => 'Um foguete bem grandao barrigudo'
+        ];
+    }
+}
