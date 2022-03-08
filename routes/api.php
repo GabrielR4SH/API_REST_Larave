@@ -36,7 +36,8 @@ Route::prefix('products')->group(function(){
     Route::get('/', 'App\Http\Controllers\Api\ProductController@index')->name('index_products');
     Route::get('/{id}', 'App\Http\Controllers\Api\ProductController@show')->name('show_products');
 
-    //POST
+    //POSTMAN::
     Route::post('/','App\Http\Controllers\Api\ProductController@store')->name('store_products');
+    Route::put('/{id}','App\Http\Controllers\Api\ProductController@update')->name('update_products');
 
 });

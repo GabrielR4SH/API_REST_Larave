@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Api\ApiError;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -26,9 +27,11 @@ class ProductController extends Controller
         
         //return $this->product->all();
 
-        //$data = ['data' => $this->product->all()];
+        $data = ['data' => $this->product->all()];
+        //return response()->json($data);
+        
         return response()->json($this->product->paginate(10));
-
+        
     }
 
     /**
@@ -49,7 +52,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //POSTMAN
+        //dd($request->all());
+
+        //$productData = $request->all();
+        //$this->product->create($productData); Assim crio dados com uma requisao POST
+
+        try{
+
+            $productData = $request()->all();
+            $this->product()->create($productData);
+
+            return response()->json(['msg' => 'Criado com Sucesso'],201);
+
+        }
+        catch(\Exception $e){
+            if(config('app.debug')){
+
+                return response()->json(ApiError::errorMessage($e->getMessage(),1010));
+
+            }
+
+            return response()->json(ApiError::errorMessage("Houve um erro ao realizar operação",1010));
+        }
+
+
     }
 
     /**
@@ -84,7 +111,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+
+            $productData = $request()->all();
+            $product = $this->product->find($id);
+            $product->update($productData);
+
+            return response()->json(['msg' => 'Atualizado com Sucesso'],201);
+
+        }
+        catch(\Exception $e){
+            if(config('app.debug')){
+
+                return response()->json(ApiError::errorMessage($e->getMessage(),1010));
+
+            }
+
+            return response()->json(ApiError::errorMessage("Houve um erro ao realizar operação",1010));
+        }
+
     }
 
     /**
